@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title id="page_title">Algorithm - </title>
+</head>
+<body>
+<h1 class="title" id="algorithm_title"></h1>
+<a href="./part1.html">
+	<button>Back</button>
+</a>
+
+<p id="algorithm_description"></p>
+
+<h3>Instructions</h3>
+<ol id="algorithm_instructions">
+	<li>Write your answers in the algorithm_solutions.js file</li>
+</ol>
+
+<h3>Tests</h3>
+<div id="tests_shown">
+	<p><i>Passing Tests</i></p>
+	<ul id="passing_test_list"></ul>
+	<p><i>Failing Tests</i></p>
+	<ul id="failing_test_list"></ul>
+</div>
+<div id="tests_hidden">No Tests to Show!</div>
+
+</body>
+</html>
+
+<!-- ************ SCRIPTS ********** -->
+
+<!-- import utility helpers-->
+<script type="text/javascript" src="../helpers/utility_helpers.js"></script>
+<!-- import test helpers-->
+<script type="text/javascript" src="../helpers/test_helpers.js"></script>
+<!-- import algorithms -->
+<script type="text/javascript" src="../data/algorithms.js"></script>
+<!-- import algorithm helper functions -->
+<script type="text/javascript" src="../helpers/algorithm_helpers.js"></script>
+<!-- import alogirithm solutions -->
+<script type="text/javascript" src="../algorithm_solutions.js"></script>
+
+<script type="text/javascript">
+
+	// get passing test list element
+	var passing_test_list = document.getElementById("passing_test_list");
+	// get failing test list element
+	var failing_test_list = document.getElementById("failing_test_list");
+	// test_item contains the current test
+	var test_item;
+	// test_object stores the test object associated with the algorithm
+	var test_object;
+	// current step from algorithm instructions
+	var instruction;
+	// Get the element of the #algorithms_instructions list
+	var algorithm_instructions = document.getElementById("algorithm_instructions");
+
+	// get the algorithm id from the url using getUrlParameter (from ./helpers/utility_helpers.js)
+	var algorithm_id = getUrlParameter("algorithm_id");
+
+	// find the algorithm from the list of algorithms
+	var algorithm_object = algorithms[algorithm_id]
+
+	// print the algorithm information to the screen
+	printAlgorithmInformation();
+	// print the algorithm instructions to the screen
+	printAlgorithmInstructions();
+	// print tests to screen if there are any
+	printTests();
+
+	// function used to print the algorithm information to the screen
+	function printAlgorithmInformation() {
+		// change page title to match the algorithm title
+		document.getElementById("page_title").append(algorithm_object.title)
+		// print the algorithm title
+		document.getElementById("algorithm_title").append(algorithm_object.title)
+		// print the algorithm description
+		document.getElementById("algorithm_description").append(algorithm_object.description)
+	}
+
+	// function used to print the algorithm instructions to the screen
+	function printAlgorithmInstructions() {
+		algorithm_object.instructions.map(function printInstruction(algorithm_instruction) {
+			// create list item using createAlgorithmListItem (from ./algorithms)
+			instruction = createAlgorithmInstructionItem(algorithm_instruction);
+			// append list item to #algorithms list
+			algorithm_instructions.appendChild(instruction);
+		})
+
+	}
+
+	// Functions that checks if there are tests associated with this algorithm
+	function hasTests() {
+		// loops through all test checking if there is a test object for this algorithm
+		return all_tests.find(function findAlgorithm(test) {
+			return test.id == algorithm_id;
+		})
+	}
+	
+	// prints the algorithm tests to the screen if there are any
+	function printTests() {
+		// check if there are tests associated with this algorithm
+		test_object = hasTests();
+
+ 		//if algorithm has no tests, hide tests heading and return
+		if (test_object == undefined) {
+			document.getElementById("tests_shown").style.display = "none";
+			return;
+		};
+
+		// if there are tests hide the "no tests to show" text
+		document.getElementById("tests_hidden").style.display = "none";
+
+		// loops through all the tests and print them to the screen
+		test_object.algorithm_tests.map(function printTest(test) {
+			// creates a test item using createAlgorithmTestItem (from ../helpers/algorithm_helpers.js)
+			test_item = createAlgorithmTestItem(test);
+
+			// add the test class to the test lists
+			passing_test_list.className = "test";
+			failing_test_list.className = "test";
+
+			// check if the test is passing. If so add the the test to the passing list
+			if (test.passed) {
+				test_item.className = "test passing";
+				// append test item to passing tests list
+				passing_test_list.appendChild(test_item);
+			}
+			// check if the test is failing. If so add the the test to the failing list
+			if (!test.passed) {
+				test_item.className = "failing";
+				// append test item to failing tests list
+				failing_test_list.appendChild(test_item);
+			}
+		})
+	}
+
+</script>
+
+<!-- ************ CSS ********** -->
+
+<style type="text/css">
+	/* make title inline so button goes next to it*/
+	.title {
+		display: inline;
+	}
+	/* remove default li styling */
+	.test {
+		padding: 0;
+		list-style-type: none;
+	}
+	
+	/* color text green if test passing */
+	.passing {
+		color: lightgreen;
+	}
+
+	/* color text red if test failing */
+	.failing {
+		color: red;
+	}
+</style>

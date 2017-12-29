@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Interview - Part 2</title>
+</head>
+<body>
+<h1 class="title">Part 2 - Snake</h1>
+<a href="../index.html">
+	<button>Back</button>
+</a>
+<p>This is a challenging task. The purpose of the task is to test how you can work with another person to implement different functions to make the game work as expected. Take your time. Think what you are tyring to achive before jumping straight into coding. If you get stuck don't worry, the purpose is not to finish the game! Try things out, you won't get it right from the first go. Go through the code asking questions to make sure you understand how it works. Complete as many of the tasks as you can. Your performance is not based on the number of tasks you solve! </p>
+
+<p><b>Tasks</b></p>
+<ol>
+	<li>Experiment with changing the colour of the snake, the speed of the game and the width and height of each of the snakes body parts</li>
+	<li>Why do we need to recolour the canvas black every time the game function executes? Comment the code out and see what happens</li>
+	<li>Change the direction of the snake according to user input. Think about how you can implement this and explain to the interviewer how you will do it.</li>
+	<li>When the snake runs into a wall it should come out from the other side. Two sides are already implemented, the top and bottom. Impelement the same feature for the other two sides. Why do we subtract 10 from the height and width. Remove it and see what happens</li>
+	<li>Generate food for the snake. Think about where the food spawns.</li>
+	<li>Make the snake grow, when it eats the food</li>
+	<li>Create a score, so the user can see how well they are doing</li>
+	<li>Think about what should happen when the snake runs into itself. Depending on what you decide implement that feature</li>
+	<li>Look at the code, how can you refactor the code to improve readability</li>
+
+</ol>
+<canvas id="gc" width="300" height="300"></canvas>
+
+</body>
+</html>
+
+<script type="text/javascript">
+	// get the canvas element
+	var c = document.getElementById("gc");
+	var ctx = c.getContext("2d");
+	// set the colour of the canvas to black
+	ctx.fillStyle = "black";
+	ctx.fillRect(0,0,c.width,c.height);
+
+	// snake tail is an array of coordinates
+	// representing the snake body
+	var tail = [
+		{px: 150, py: 150},
+		{px: 140, py: 150},
+		{px: 130, py: 150},
+		{px: 120, py: 150},
+		{px: 110, py: 150},
+	];
+
+	// controls the speed of the game. Using a higher value makes the snake go faster
+	const GAME_SPEED = 10;
+	// the width of each box that makes up the snake body
+	const SNAKE_PART_WIDTH = 10;
+	// the height of each box that makes up the snake body
+	const SNAKE_PART_HEIGHT = 10;
+
+	// Calls the game function at a set interval depending on the game speed
+	setInterval(game, 1000/GAME_SPEED);
+	
+	function game() {
+		// recolour canvas black to remove tail trace
+		ctx.fillStyle = "black";
+		ctx.fillRect(0,0,c.width,c.height);
+
+		// print the snakes body by looping through the coordinate objects in the tail array and printing
+		// the coordinates to the screen
+		for (var i = 0; i < tail.length; i++) {
+			// set the body of the snake to green
+			ctx.fillStyle = "lightgreen";
+			// prints each snake part (box) to the screen
+			ctx.fillRect(tail[i].px, tail[i].py, SNAKE_PART_WIDTH, SNAKE_PART_HEIGHT);
+		}
+
+		/* 
+			The snake moves by adding a new coordinates object to the begining of the tail array, and removing
+			the last 
+		*/
+		// adds the new coordinates object to the begining of the tail array
+		tail.unshift({px: tail[0].px + SNAKE_PART_WIDTH, py: tail[0].py});
+		// removes the last coordinates object from the snake array
+		tail.pop();
+
+		// when the snake reaches the end of the canavas, make it come out from the opposite side
+		if (tail[0].px < 0) { // when it comes out from the left side
+			tail[0].px = c.width - 10;
+		}
+		if (tail[0].px > c.width - 10) { // when it comes out from the right side
+			tail[0].px = 0;
+		}
+	}
+
+</script>
+
+<style type="text/css">
+	.title {
+		display: inline;
+	}
+</style>

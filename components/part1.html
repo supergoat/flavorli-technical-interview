@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Interview - Part 1</title>
+</head>
+<body>
+<h1 class="title">Part 1</h1>
+<a href="../index.html">
+	<button>Back</button>
+</a>
+<h3>Algorithms</h3>
+<ul id="algorithms_list">
+<!-- Example of how algorithm list item should look-->
+<!-- 	<li class="algorithm">
+		<p>
+			<b>Title:</b> Sum All<br>
+			<b>Description</b>: 	Given an array of two numbers sum up the two numbers and all the numbers in between. The lowest number will not always come first 
+		</p>
+	</li> -->
+</ul>
+</body>
+</html>
+
+<!-- ************ SCRIPTS ********** -->
+<!-- import algorithms -->
+<script type="text/javascript" src="../data/algorithms.js"></script>
+<!-- import algorithm helper functions -->
+<script type="text/javascript" src="../helpers/algorithm_helpers.js"></script>
+<script>
+	// Get the element of the #algorithms list
+	var algorithms_list = document.getElementById("algorithms_list");
+	// list_item stores the current algorithm item
+	var list_item;
+	// Loop through the algorithms array (from ./algorithms) and append them to the #algorithms list
+	algorithms.map(function printAlgorithms(algorithm) {
+		// create list item using createAlgorithmListItem (from ./algorithms)
+		list_item = createAlgorithmListItem(algorithm);
+		// add the algorithm class
+		list_item.className = "algorithm";
+		// append list item to #algorithms list
+		algorithms_list.appendChild(list_item);
+	})
+</script>
+
+<!-- ************ CSS ********** -->
+<style type="text/css">
+	/* make title inline so button goes next to it*/
+	.title {
+		display: inline;
+	}
+
+	/* remove default li styling */
+	#algorithms_list {
+		padding: 0;
+		list-style-type: none;
+	}
+	/* Create a box around each algorithm*/
+	.algorithm {
+		border: 1px solid black;
+		border-radius: 3px;
+		margin-bottom: 10px;
+		padding: 10px;
+		max-width: 500px;
+	}
+
+	/* change backgroung colour of box to indicate its being highlighted */
+	.algorithm:hover {
+		background: lightgreen;
+		cursor: pointer;
+	}
+	/*remove default anchor styling */
+	.algorithm a {
+		text-decoration: inherit;
+		color: inherit;
+	}
+</style>
